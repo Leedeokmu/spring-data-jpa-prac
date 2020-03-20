@@ -1,6 +1,5 @@
 package study.datajpa.repository;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -49,7 +48,21 @@ class MemberJpaRepositoryTest {
 
         long count = memberJpaRepository.count();
         assertEquals(count, 2);
+    }
+    @Test
+    public void findByUsernameAndAgeGreaterThenTest () {
+        // given
+        Member member1 = new Member("memberA", 10);
+        Member member2 = new Member("memberA", 20);
+        memberJpaRepository.save(member1);
+        memberJpaRepository.save(member2);
+        
+        // when
+        List<Member> result = memberJpaRepository.findByUsernameAndAgeGreaterThan("memberA", 10);
 
-
+        // then
+        assertEquals(result.get(0).getUsername(), "memberA");
+        assertEquals(result.get(0).getAge(), 20);
+        assertEquals(result.size(), 1);
     }
 }
